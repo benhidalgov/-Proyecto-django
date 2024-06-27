@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Titulo -->
+    <title>Rotten Potatoes - {% block title %} Título {% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    {% block head %} {% endblock %}
+</head>
+<body>
+<div class="content">
+    {% block navbar %}
+    <!-- Cabecera -->
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'img/icon.png' %}" alt="Logo de la marca" />
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'base' %}">Inicio</a></li>
+                <li><a href="{% url 'tienda' %}">Tienda</a></li>
+                <li><a href="{% url 'who' %}">Quienes somos</a></li>
+                <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                <li><a href="{% url 'registro' %}">Registrarse</a></li>
+            </ul>
+        </nav>
+
+
+        <a class="btn" href="{% url 'contacto' %}" target="_blank">
+            <button>Contacto</button>
+        </a>
+    </header>
+    {% endblock %}
+
+    {% block content %}
+    <div class="row">
+        <article class="article">
+            <section class="section">
+                <div class="img">
+                    <img src="{% static 'img/cat (1).jpg' %}" alt="" />
+                </div>
+                <div class="section-info">
+                    <h2>¿En qué nos enfocamos?</h2>
+                    <ul>
+                        <li>En la venta de películas para consumo personal o múltiple</li>
+                        <li>Traer las mejores películas de cartelera a un precio accesible para que las disfrutes en la comodidad de tu hogar</li>
+                    </ul>
+                </div>
+            </section>
+            <hr />
+            <section class="section">
+                <div class="img">
+                    <img src="#" alt="" />
+                </div>
+                <div class="section-info">
+                    <h2>FAQ</h2>
+                    <ul>
+                        <li>¿Cuáles son nuestros métodos de pago?</li>
+                        <br />
+                        <p>Aceptamos débito, crédito y tenemos un sistema prepago de cargo de saldo</p>
+                        <li>¿Puedo quedarme las películas una vez haga mi pago?</li>
+                        <br />
+                        <p>¡Sí! Una vez procesado tu pago podrás descargarla y moverla para otros dispositivos libre de cargo</p>
+                        <li>¿Puedo pedir una película en específico además de las de su catálogo?</li>
+                        <br />
+                        <p>Por el momento no, implementaremos eso en un futuro</p>
+                    </ul>
+                </div>
+            </section>
+        </article>
+    </div>
+    {% endblock %}
+
+    {% block footer %}
+    <!-- Pie de página -->
+    <footer class="footer">
+        <p></p>
+    </footer>
+    {% endblock %}
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+{% block extrajs %} {% endblock %}
+</body>
+</html>

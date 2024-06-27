@@ -1,0 +1,53 @@
+{% load static %}
+{% block content %}
+<div class="container">
+  <link href="{% static 'css/stylecrud.css' %}" rel="stylesheet">
+  <h1 class="display-3">Películas</h1>
+  <hr />
+  <a class="btn btn-add" role="button" href="{% url 'registrar_pelicula' %}">Agregar</a>
+  <hr />
+
+  {% if not object_list %}
+  <h1 class="no-record">No hay registro de películas</h1>
+  <br /><br /><br /><br /><br /><br /><br /><br />
+  {% else %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td>Portada</td>
+        <td>Nombre</td>
+        <td>Género</td>
+        <td>Duración</td>
+        <td>Descripción</td>
+        <td>Precio</td>
+        <td>Acciones</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pelicula in object_list %}
+      <tr>
+        <td>
+          <div class="img-container">
+            <img
+              src="{{ pelicula.portada.url }}"
+              alt="Portada de {{ pelicula.nombre }}"
+              class="img-thumbnail"
+            />
+          </div>
+        </td>
+        <td>{{ pelicula.nombre }}</td>
+        <td>{{ pelicula.genero }}</td>
+        <td>{{ pelicula.duracion }} min</td>
+        <td>{{ pelicula.descripcion }}</td>
+        <td>${{ pelicula.precio }}</td>
+        <td>
+          <a class="btn btn-primary" href="{% url 'pelicula_update' pelicula.pk %}">Editar</a>
+          <a class="btn btn-danger" href="{% url 'pelicula_borrar' pelicula.pk %}">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endblock %}

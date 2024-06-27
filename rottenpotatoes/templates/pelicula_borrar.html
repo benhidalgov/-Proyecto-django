@@ -1,0 +1,17 @@
+{% load static %}
+
+{% block content %}
+<div class="container mt-3 pb-3">
+    <link href="{% static 'css/stylecrud.css' %}" rel="stylesheet">
+    <div class="col-md-5">
+        <h1>Eliminar Película</h1>
+        <form method="POST">{% csrf_token %}
+            <div>
+                <h3>¿Desea eliminar el registro de {{ object.nombre }}?</h3><br>
+                <button class="btn btn-danger" type="submit">Sí</button>
+                <a class="btn btn-default" href="{% url 'Registro:pelicula_list' %}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

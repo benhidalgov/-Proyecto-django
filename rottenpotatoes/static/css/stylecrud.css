@@ -1,0 +1,134 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
+}
+
+body {
+  background-color: #000000; /* Fondo negro */
+  line-height: 1.6; /* Aumentar el espacio entre líneas para mejorar la legibilidad */
+}
+
+.header {
+  background-color: #4b000f; /* Rojo oscuro */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 85px;
+  padding: 5px 10%;
+}
+
+.header .logo {
+  cursor: pointer;
+}
+
+.header .logo img,
+.header .logo svg {
+  height: 70px;
+  width: auto;
+  transition: all 0.3s;
+}
+
+.header .logo img:hover,
+.header .logo svg:hover {
+  transform: scale(1.2);
+}
+
+.header .nav-links {
+  list-style: none;
+}
+
+.header .nav-links li {
+  display: inline-block;
+  padding: 0 20px;
+}
+
+.header .nav-links li:hover {
+  transform: scale(1.1);
+}
+
+.header .nav-links a {
+  font-weight: 800;
+  color: #ffffff; /* Blanco puro para mayor contraste */
+  text-decoration: none;
+  font-size: 22px; /* Aumentar el tamaño de la fuente */
+}
+
+.header .nav-links li a:hover {
+  color: #ff6f61; /* Rojo claro */
+}
+
+.header .btn button {
+  font-weight: 800;
+  color: #4b000f; /* Rojo oscuro */
+  padding: 9px 25px;
+  background: #ffffff; /* Blanco puro */
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  font-size: 22px; /* Aumentar el tamaño de la fuente */
+}
+
+.header .btn button:hover {
+  background-color: #ff6f61; /* Rojo claro */
+  color: #4b000f; /* Rojo oscuro */
+  transform: scale(1.1);
+}
+
+/* New styles for the navigation bar */
+
+.header .nav-links {
+  display: flex;
+}
+
+.header .nav-links li {
+  margin-right: 20px;
+}
+
+.header .nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.header .nav-links a:hover {
+  color: #ff6f61;
+}
+
+.header .btn button {
+  background-color: #ff6f61;
+  color: #ffffff;
+}
+
+.header .btn button:hover {
+  background-color: #d55f6f;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 5%;
+  }
+
+  .header .nav-links {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .header .nav-links li {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+  }
+}

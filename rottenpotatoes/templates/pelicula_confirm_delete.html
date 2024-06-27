@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Confirmar Eliminación</title>
+    <link href="{% static 'css/stylecrud.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Confirmar Eliminación</h1>
+    <p>¿Estás seguro que quieres eliminar esta película: "{{ object }}"?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Sí, eliminar</button>
+      <a href="{% url 'pelicula_list' %}">Cancelar</a>
+    </form>
+  </body>
+</html>

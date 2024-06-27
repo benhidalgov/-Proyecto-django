@@ -1,0 +1,22 @@
+{% load static %} {% block content %}
+<div class="container mt-3 pb-3">
+  <div class="col-md-5">
+    <link href="{% static 'css/stylecrud.css' %}" rel="stylesheet">
+    <h1>Editar Película</h1>
+    <form id="formulario" method="POST" enctype="multipart/form-data">
+      {% csrf_token %} {% csrf_token %}
+      <!-- {{ form.as_p }} -->
+
+      {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.name }}">{{ field.label_tag }}</label><br />
+        {{ field }}
+        <div class="bg-danger mt-1">{{ field.errors }}</div>
+      </div>
+      {% endfor %}
+
+      <input type="submit" value="Guardar Cambios" class="btn btn-success" />
+    </form>
+  </div>
+</div>
+{% endblock %}
