@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap");
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -182,65 +180,44 @@ li {
   font-size: 24px; /* Aumentar el tamaño de la fuente */
 }
 
-/* Estilos específicos para la página "Nosotros" */
-.article {
-  padding: 20px;
-  background-color: #2d2d2d; /* Gris oscuro */
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.section-info {
-  margin-bottom: 20px;
-}
-
-.section-info h2 {
-  margin-bottom: 15px;
-}
-
-.section-info p {
-  margin-bottom: 10px;
-  line-height: 1.8; /* Aumentar el espacio entre líneas para mejorar la legibilidad */
-}
-
-.footer {
-  background-color: #4b000f; /* Rojo oscuro */
-  color: #ffffff; /* Blanco puro para mayor contraste */
-  text-align: center;
-  padding: 10px 0;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
 /* Dropdown content (hidden by default) */
-.dropdown-content {
+.dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #f9f9f9; /* Cambiar este color a gris */
+  background-color: #2d2d2d; /* Gris oscuro */
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
 /* Cambiar el fondo de la lista desplegable a gris */
-.dropdown-content ul {
+.dropdown-menu ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  background-color: #ccc; /* Cambiar el color de fondo a gris */
+  background-color: #2d2d2d; /* Gris oscuro */
 }
-.contenedor > div {
+
+.dropdown-menu ul li {
+  padding: 10px 15px;
+}
+
+.dropdown-menu ul li a {
+  display: block;
+  color: #000000; /* Texto negro */
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu ul li a:hover {
   background-color: #4b000f; /* Rojo oscuro */
-  margin: 10px; /* Espacio exterior entre los divs */
-  padding: 20px; /* Espacio interior dentro de cada div */
-  border-radius: 10px; /* Borde redondeado */
-  text-align: center; /* Alineación del contenido al centro */
-  width: calc(33.33% - 20px); /* Ancho aproximado para 3 columnas */
-  max-width: 300px; /* Ancho máximo para cada div */
-  flex: 1 0 auto; /* Permitir que los divs crezcan y se encogerán */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  color: #ffffff; /* Texto blanco */
 }
+
+.nav-item:hover .dropdown-menu {
+  display: block;
+}
+
 /* Estilos para el formulario de inicio de sesión */
 form {
   max-width: 400px;
@@ -273,7 +250,7 @@ form input[type="password"] {
   background-color: #ffffff; /* Color de fondo blanco */
 }
 
-form input[type="button"] {
+form input[type="submit"] {
   font-weight: 700; /* Aumentar el peso de la fuente del botón */
   color: #ffffff; /* Color de texto blanco */
   background-color: #4b000f; /* Color de fondo rojo oscuro */
@@ -284,15 +261,8 @@ form input[type="button"] {
   transition: background-color 0.3s ease;
 }
 
-form input[type="button"]:hover {
+form input[type="submit"]:hover {
   background-color: #ff6f61; /* Cambio de color de fondo al hacer hover */
-}
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa;
-  color: #333;
 }
 
 .container {
@@ -310,92 +280,47 @@ body {
 
 hr {
   margin: 20px 0;
-  border-color: #dee2e6;
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 1rem;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  border-radius: 4px;
-  border: 1px solid transparent;
-}
-
-.btn-add {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.btn-add:hover {
-  background-color: #0056b3;
-  color: white;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-  font-size: 1rem;
-}
-
-.table th {
-  background-color: #f2f2f2;
-  color: #333;
-}
-
-.img-container {
-  text-align: center;
-}
-
-.img-thumbnail {
-  width: 75px;
-  height: auto;
+  border: 0;
 }
 
 .btn-primary {
-  background-color: #007bff;
-  color: white;
-  border: 1px solid #007bff;
-  padding: 5px 10px;
-  text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #4b000f;
+  border-color: #4b000f;
+  font-size: 1.2rem;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
-  color: white;
+  background-color: #ff6f61;
+  border-color: #ff6f61;
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-  border: 1px solid #dc3545;
-  padding: 5px 10px;
-  text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.label-descripcion {
-  font-size: 14px; 
-}
-.btn-danger:hover {
-  background-color: #c82333;
-  color: white;
+.form-group {
+  margin-bottom: 20px;
 }
 
-.no-record {
-  text-align: center;
-  font-size: 1.5rem;
-  color: #888;
+.form-group label {
+  font-size: 1.2rem;
+  color: #212529;
+}
+
+.form-control {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.form-check-label {
+  font-size: 1rem;
+  color: #212529;
+}
+
+/* Estilos específicos para la tarjeta de película */
+.card-body,
+.card-text,
+.card-title{
+  color: #000000; /* Texto negro */
+}
+
+.comprarBtn{
+  color: white;
 }

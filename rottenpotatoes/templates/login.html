@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +17,7 @@
     <!-- Custom CSS -->
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 
-    <title>Iniciar Sesión</title>
+    <title>Inicio de Sesión</title>
   </head>
   <body>
     <header class="header">
@@ -27,21 +26,60 @@
       </div>
       <nav>
         <ul class="nav-links">
-            <li><a href="{% url 'base' %}">Inicio</a></li>
-            <li><a href="{% url 'tienda' %}">Tienda</a></li>
-            <li><a href="{% url 'who' %}">Quienes somos</a></li>
-            <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
-            <li><a href="{% url 'registro' %}">Registrarse</a></li>
+          <li><a href="{% url 'base' %}">Inicio</a></li>
+          <li><a href="{% url 'tienda' %}">Tienda</a></li>
+          <li><a href="{% url 'who' %}">Quienes somos</a></li>
+          {% if user.is_authenticated %}
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-link"
+                style="padding: 0; border: none; background: none"
+              >
+                Cerrar Sesión
+              </button>
+            </form>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'login' %}" id="loginLink">Iniciar Sesión</a>
+          </li>
+          <li><a href="{% url 'Registro' %}">Registrarse</a></li>
+          {% endif %}
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Películas
+            </a>
+            <div
+              class="dropdown-menu"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <a class="dropdown-item" href="{% url 'pelicula_list' %}"
+                >Lista de Películas</a
+              >
+              <a class="dropdown-item" href="{% url 'registrar_pelicula' %}"
+                >Registrar Película</a
+              >
+            </div>
+          </li>
         </ul>
-    </nav>
-
-
+      </nav>
       <a class="btn" href="{% url 'contacto' %}"><button>Contacto</button></a>
     </header>
 
-    <form action="{% url 'login' %}" method="post">
+    <form id="login-form" method="post">
       {% csrf_token %}
-      <h2>Iniciar Sesión</h2>
+      <h2>Inicio de Sesión</h2>
       <label for="username">Usuario:</label>
       <input
         type="text"
@@ -60,11 +98,17 @@
         required
       />
 
-      <!-- Campo oculto para la redirección después del inicio de sesión -->
-      <input type="hidden" name="next" value="{{ next }}" />
-
       <input type="submit" value="Iniciar Sesión" />
     </form>
+
+    <div id="success-message" style="display: none">
+      <p>¡Inicio de sesión exitoso!</p>
+      <p>Usuario: <span id="username-success"></span></p>
+    </div>
+
+    <div id="error-message" style="display: none">
+      <p id="errors"></p>
+    </div>
 
     <!-- Bootstrap JavaScript dependencies -->
     <script

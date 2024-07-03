@@ -8,6 +8,26 @@ from django.contrib.auth.models import User
 from django.utils.datastructures import MultiValueDictKeyError
 from .models import Pelicula
 from .forms import PeliculaForm
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from .forms import RegistroForm
+from django.middleware.csrf import get_token
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def logout_view(request):
+    logger.info("Intento de cierre de sesión.")
+    logout(request)
+    logger.info("Sesión cerrada exitosamente.")
+    return redirect("base")
 
 
 class PeliculaList(ListView):
@@ -19,12 +39,10 @@ class PeliculaCreate(CreateView):
     model = Pelicula
     form_class = PeliculaForm
     template_name = "pelicula_form.html"
-    success_url = reverse_lazy("pelicula_list")
 
     def form_valid(self, form):
-        pelicula = form.save(commit=False)
-        pelicula.save()
-        return super().form_valid(form)
+        self.object = form.save()
+        return redirect("admin:Registro_pelicula_add")
 
 
 class PeliculaUpdate(UpdateView):
@@ -40,21 +58,12 @@ class PeliculaDelete(DeleteView):
     success_url = reverse_lazy("pelicula_list")
 
 
-@login_required
-def animalrandom(request):
-    return render(request, "animalrandom.html")
-
-
 def base(request):
     return render(request, "base.html")
 
 
 def contacto(request):
     return render(request, "contacto.html")
-
-
-def next(request):
-    return render(request, "next.html")
 
 
 def tienda(request):
@@ -66,54 +75,81 @@ def who(request):
 
 
 def registro(request):
-    if request.method == "POST":
-        try:
-            username = request.POST["username"]
-            email = request.POST["email"]
-            password = request.POST["password"]
-            password_confirm = request.POST["password_confirm"]
+    if (
+        request.method == "POST"
+        and request.headers.get("x-requested-with") == "XMLHttpRequest"
+    ):
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        password_confirm = request.POST.get("password_confirm")
 
-            # Validación básica de contraseñas
-            if password != password_confirm:
-                messages.error(request, "Las contraseñas no coinciden.")
-                return redirect("registro")
+        errors = []
 
-            # Crear usuario
-            user = User.objects.create_user(
-                username=username, email=email, password=password
-            )
-            messages.success(request, "Usuario registrado exitosamente.")
-            return redirect("base")  # Redirigir al inicio
+        if not username or not email or not password or not password_confirm:
+            errors.append("Todos los campos son obligatorios.")
 
-        except Exception as e:
-            messages.error(request, f"Error al registrar usuario: {e}")
-            return redirect("registro")
+        if password != password_confirm:
+            errors.append("Las contraseñas no coinciden.")
 
-    return render(request, "registro.html")
+        if User.objects.filter(username=username).exists():
+            errors.append("El nombre de usuario ya está en uso.")
+
+        if User.objects.filter(email=email).exists():
+            errors.append("El correo electrónico ya está en uso.")
+
+        if errors:
+            return JsonResponse({"success": False, "errors": errors})
+
+        user = User.objects.create_user(
+            username=username, email=email, password=password
+        )
+        user = authenticate(username=username, password=password)
+        login(request, user)
+
+        return JsonResponse({"success": True, "username": username, "email": email})
+
+    # Añadir un token CSRF en la respuesta
+    csrf_token = get_token(request)
+    return render(request, "registro.html", {"csrf_token": csrf_token})
 
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        next_url = request.POST.get("next", "")
+        # Verificar si es una solicitud AJAX
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            username = request.POST.get("username")
+            password = request.POST.get("password")
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if next_url:
-                return redirect(next_url)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({"success": True, "username": username})
             else:
-                return redirect("base")
+                return JsonResponse(
+                    {"success": False, "error": "Credenciales inválidas"}
+                )
+
+        # Si no es AJAX, manejar como una solicitud normal de formularios HTML
         else:
-            return render(
-                request,
-                "login.html",
-                {"next": next_url, "error_message": "Credenciales inválidas"},
-            )
-    else:
-        next_url = request.GET.get("next", "")
-        return render(request, "login.html", {"next": next_url})
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redireccionar después del inicio de sesión
+                return redirect(
+                    "tienda"
+                )  # Cambia "tienda" por la URL a la que quieres redirigir
+
+            # Si la autenticación falla, mostrar el formulario de inicio de sesión nuevamente
+            context = {"csrf_token": get_token(request)}
+            return render(request, "login.html", context)
+
+    # Si es una solicitud GET, mostrar el formulario de inicio de sesión
+    context = {"csrf_token": get_token(request)}
+    return render(request, "login.html", context)
 
 
 def pelicula_borrar(request, pk):
@@ -126,7 +162,7 @@ def pelicula_borrar(request, pk):
 
 def pelicula_list(request):
     peliculas = Pelicula.objects.all()
-    return render(request, "pelicula_list.html", {"object_list": peliculas})
+    return render(request, "tu_template.html", {"peliculas": peliculas})
 
 
 def pelicula_update(request, pk):
@@ -147,3 +183,18 @@ def pelicula_borrar(request, nombre):
         pelicula.delete()
         return redirect("pelicula_list")
     return render(request, "pelicula_borrar.html", {"object": pelicula})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("base")
+
+
+def next(request):
+    # Lógica de tu vista 'next'
+    return render(request, "base.html")
+
+
+def tienda(request):
+    peliculas = Pelicula.objects.all()
+    return render(request, "tienda.html", {"peliculas": peliculas})

@@ -2,45 +2,86 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <link href="{% static 'css/stylescrud.css' %}" rel="stylesheet">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link href="{% static 'css/stylescrud.css' %}" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Registro de película{% endblock %}</title>
-
-</head>
-<body>
+  </head>
+  <body>
     <header class="header">
-        <div class="logo">
-            <img src="{% static 'img/icon.png' %}" alt="Logo de la marca">
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="{% url 'base' %}">Inicio</a></li>
-                <li><a href="{% url 'tienda' %}">Tienda</a></li>
-                <li><a href="{% url 'who' %}">Quienes somos</a></li>
-                <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
-                <li><a href="{% url 'registro' %}">Registrarse</a></li>
-            </ul>
-        </nav>
-        <a class="btn" href="{% url 'contacto' %}"><button>Contacto</button></a>
+      <div class="logo">
+        <img src="{% static 'img/icon.png' %}" alt="Logo de la marca" />
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="{% url 'base' %}">Inicio</a></li>
+          <li><a href="{% url 'tienda' %}">Tienda</a></li>
+          <li><a href="{% url 'who' %}">Quienes somos</a></li>
+          {% if user.is_authenticated %}
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-link"
+                style="padding: 0; border: none; background: none"
+              >
+                Cerrar Sesión
+              </button>
+            </form>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'login' %}" id="loginLink">Iniciar Sesión</a>
+          </li>
+          <li><a href="{% url 'Registro' %}">Registrarse</a></li>
+          {% endif %}
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Películas
+            </a>
+            <div
+              class="dropdown-menu"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <a class="dropdown-item" href="{% url 'pelicula_list' %}"
+                >Lista de Películas</a
+              >
+              <a class="dropdown-item" href="{% url 'registrar_pelicula' %}"
+                >Registrar Película</a
+              >
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <a class="btn" href="{% url 'contacto' %}"><button>Contacto</button></a>
     </header>
 
     <div class="container mt-3 pb-3">
-        <div class="col-md-5">
-            <h1>Registrar película</h1>
-            <form id="formulario" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label><br>
-                    {{ field }}
-                    <div class="bg-danger mt-1">{{ field.errors }}</div>
-                </div>
-                {% endfor %}
-                <input type="submit" value="Grabar" class="btn btn-success">
-            </form>
-        </div>
+      <div class="col-md-5">
+        <h1>Registrar película</h1>
+        <form id="formulario" method="POST" enctype="multipart/form-data">
+          {% csrf_token %} {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label
+            ><br />
+            {{ field }}
+            <div class="bg-danger mt-1">{{ field.errors }}</div>
+          </div>
+          {% endfor %}
+          <input type="submit" value="Grabar" class="btn btn-success" />
+        </form>
+      </div>
     </div>
     {% block content %}{% endblock %}
-</body>
+  </body>
 </html>
